@@ -63,7 +63,16 @@ int main() {
     char caracter = getchar();
 
     while (true) {
+
         if (caracter == 'Y' || caracter == 254) {
+            datetime_t date = {0};
+            rtc_get_datetime(&date);
+            char datetime_buf[256];
+            char *datetime_str = &datetime_buf[0];
+            datetime_to_str(datetime_str, sizeof(datetime_buf), &date);
+
+            printf("%s - ", datetime_str);
+
             fall_time = 0;
             rise_time = 0;
 
@@ -87,13 +96,12 @@ int main() {
             } else {
                 float distance = (fall_time - rise_time) * SOUND_SPEED_US / 2;
 
-                datetime_t date = {0};
-                rtc_get_datetime(&date);
-                char datetime_buf[256];
-                char *datetime_str = &datetime_buf[0];
-                datetime_to_str(datetime_str, sizeof(datetime_buf), &date);
+                if (distance > 300) {
+                    printf("Falha\n");
+                } else {
+                    printf("%f cm\n", distance);
+                }
 
-                printf("%s - %f cm\n", datetime_str, distance);
                 cancel_alarm(alarm);
             }
 

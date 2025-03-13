@@ -87,11 +87,11 @@ int main() {
             } else {
                 float distance = (fall_time - rise_time) * SOUND_SPEED_US / 2;
 
-                datetime_t t = {0};
-                rtc_get_datetime(&t);
+                datetime_t date = {0};
+                rtc_get_datetime(&date);
                 char datetime_buf[256];
                 char *datetime_str = &datetime_buf[0];
-                datetime_to_str(datetime_str, sizeof(datetime_buf), &t);
+                datetime_to_str(datetime_str, sizeof(datetime_buf), &date);
 
                 printf("%s - %f cm\n", datetime_str, distance);
                 cancel_alarm(alarm);
